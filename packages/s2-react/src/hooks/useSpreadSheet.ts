@@ -43,6 +43,8 @@ export function useSpreadSheet(props: SheetComponentProps) {
   const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
   const pagination = usePagination(s2Ref.current!, props);
 
+  
+  console.log("useEvents/useSpreadSheet")
   useEvents(props, s2Ref.current!);
 
   const renderSpreadSheet = React.useCallback(

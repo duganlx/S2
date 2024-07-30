@@ -5,49 +5,51 @@ import {
   SheetComponent,
   type SheetComponentOptions,
 } from '../../src/components';
+import { renderToMountedElement, stdlib } from '@antv/g2';
 
+// genData 生成S2明细表测试数据
 function genData() {
-  const chartRow = {
-    province: {
-      values: {
-        type: 'interval',
-        autoFit: true,
-        data: [
-          { x: 'a', val: 2 },
-          { x: 'b', val: 3 },
-          { x: 'c', val: 3 },
-          { x: 'd', val: -3 },
-        ],
-        encode: { x: 'x', y: 'val' },
-        axis: {
-          y: {
-            title: false,
-            tick: false,
-            line: false,
-            label: false,
-            grid: false,
-          },
-          x: { title: false, tick: false, line: false, label: false },
-        },
-        animate: {
-          enter: { type: null },
-          update: { type: null },
-          exit: { type: null },
-        },
-        tooltip: null,
-        margin: 0,
-        padding: 0,
-      },
-    },
-    city: {
-      values: [
-        ['a', 10],
-        ['b', -10],
-        ['c', 0],
-        ['d', 101],
-      ],
-    },
-  };
+  // const chartRow = {
+  //   province: {
+  //     values: {
+  //       type: 'interval',
+  //       autoFit: true,
+  //       data: [
+  //         { x: 'a', val: 2 },
+  //         { x: 'b', val: 3 },
+  //         { x: 'c', val: 3 },
+  //         { x: 'd', val: -3 },
+  //       ],
+  //       encode: { x: 'x', y: 'val' },
+  //       axis: {
+  //         y: {
+  //           title: false,
+  //           tick: false,
+  //           line: false,
+  //           label: false,
+  //           grid: false,
+  //         },
+  //         x: { title: false, tick: false, line: false, label: false },
+  //       },
+  //       animate: {
+  //         enter: { type: null },
+  //         update: { type: null },
+  //         exit: { type: null },
+  //       },
+  //       tooltip: null,
+  //       margin: 0,
+  //       padding: 0,
+  //     },
+  //   },
+  //   city: {
+  //     values: [
+  //       ['a', 10],
+  //       ['b', -10],
+  //       ['c', 0],
+  //       ['d', 101],
+  //     ],
+  //   },
+  // };
 
   const normalRow: any[] = [];
 
@@ -56,12 +58,24 @@ function genData() {
       province: '浙江' + i,
       city: '杭州' + i,
       type: '笔' + i,
-      price: i,
+      price: 0,
     });
   }
 
   // return [chartRow, ...normalRow];
   return normalRow;
+}
+
+// 获取自定义单元格对象
+function getCustomDataCell(cell: any) {
+  if (!cell) return;
+
+  let node: any = cell['target']
+  while (node && !(node instanceof CustomDataCell)) {
+    node = node['parentNode']
+  }
+
+  return node
 }
 
 class CustomDataCell extends DataCell {
@@ -80,7 +94,7 @@ class CustomDataCell extends DataCell {
 }
 
 const DebugSheet: React.FC = () => {
-  const [init, setInit] = useState<number>(0);
+  // const [init, setInit] = useState<number>(0);
   const [s2DataConfig, setS2DataConfig] = useState<S2DataConfig>();
   const [s2Options, setS2Options] = useState<SheetComponentOptions>();
 
@@ -88,8 +102,6 @@ const DebugSheet: React.FC = () => {
   const [checkedColIndex, setCheckedColIndex] = useState<number>(0);
 
   useEffect(() => {
-    if (init > 0) return;
-
     const s2dc = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
@@ -104,21 +116,30 @@ const DebugSheet: React.FC = () => {
       data: genData(),
     };
 
-    const s2opt = {
+    const s2opt: SheetComponentOptions = {
       width: 600,
       height: 400,
       seriesNumber: { enable: true, text: '序号' },
-      frozen: {
-        rowCount: 1,
-      },
-      style: {
-        rowCell: {
-          heightByField: {
-            '0': 100,
-          },
-          height: 24,
-        },
-      },
+      tooltip: {
+        enable: true,
+        // dataCell: {
+        //   content(cell, defaultTooltipShowOptions) {
+        //     console.log(cell, defaultTooltipShowOptions, "content/dataCell/tooltip")
+        //     return ""
+        //   },
+        // }
+      }
+      // frozen: {
+      //   rowCount: 1,
+      // },
+      // style: {
+      //   rowCell: {
+      //     heightByField: {
+      //       '0': 100,
+      //     },
+      //     height: 24,
+      //   },
+      // },
       // dataCell: (viewMeta: any, spreadsheet: any) => {
       //   return new CustomDataCell(viewMeta, spreadsheet);
       // },
@@ -126,8 +147,7 @@ const DebugSheet: React.FC = () => {
 
     setS2Options(s2opt);
     setS2DataConfig(s2dc);
-    setInit(1);
-  }, [init]);
+  }, []);
   console.log('DebugSheet');
 
   // useEffect(() => {
@@ -161,35 +181,46 @@ const DebugSheet: React.FC = () => {
           sheetType="table"
           dataCfg={s2DataConfig}
           options={s2Options}
-          themeCfg={{
-            theme: {
-              // splitLine: {
-              //   shadowWidth: 0,
-              //   horizontalBorderColor: 'white',
-              // },
-              dataCell: {
-                cell: {
-                  interactionState: {
-                    selected: {
-                      backgroundColor: '#ffe58f',
-                      borderWidth: 2,
-                      borderColor: 'red',
-                    },
-                  },
-                },
-              },
-            },
+          // themeCfg={{
+          //   theme: {
+          //     // splitLine: {
+          //     //   shadowWidth: 0,
+          //     //   horizontalBorderColor: 'white',
+          //     // },
+          //     dataCell: {
+          //       cell: {
+          //         interactionState: {
+          //           selected: {
+          //             backgroundColor: '#ffe58f',
+          //             borderWidth: 2,
+          //             borderColor: 'red',
+          //           },
+          //         },
+          //       },
+          //     },
+          //   },
+          // }}
+          onDataCellClick={() => {
+            console.log("-1")
           }}
-          onDataCellClick={(cell) => {
-            // console.log(cell, 'cell');
-            const { viewMeta } = cell;
-            const { rowIndex, colIndex } = viewMeta;
+          // onDataCellClick={(cell) => {
+          //   // cell 中的 viewMeta: 当点击的单元格为G2图时为 undefined
+          //   console.log(cell, 'cell/onDataCellClick/DebugSheet');
+          //   const cdc = getCustomDataCell(cell)
+          //   console.log(cdc, 'customDataCell/onDataCellClick/DebugSheet')
 
-            unstable_batchedUpdates(() => {
-              setCheckedRowIndex(rowIndex);
-              setCheckedColIndex(colIndex);
-            });
-          }}
+          //   if (!cdc) {
+          //     console.error(cell, "notFoundCustomDataCell/onDataCellClick/DebugSheet")
+          //     return
+          //   }
+
+          //   const { rowIndex, colIndex } = cdc['meta'];
+
+          //   unstable_batchedUpdates(() => {
+          //     setCheckedRowIndex(rowIndex);
+          //     setCheckedColIndex(colIndex);
+          //   });
+          // }}
           // onDataCellRender={(cell) => {
           //   if (!cell.isChartData()) {
           //     return;
@@ -206,25 +237,26 @@ const DebugSheet: React.FC = () => {
           //       library: stdlib(),
           //     });
           //   } catch (e) {
-          //     console.log(
-          //       cell,
-          //       chartOptions,
-          //       e,
-          //       'exception renderToMountedElement Step2ResultView',
-          //     );
+          //     console.log(e)
+          //     // console.log(
+          //     //   cell,
+          //     //   chartOptions,
+          //     //   e,
+          //     //   'exception renderToMountedElement Step2ResultView',
+          //     // );
           //   }
           // }}
-          onDataCellSelectMove={(metaList) => {
-            // console.log(metaList, 'metaList/onDataCellSelectMove');
-            if (metaList.length == 0) return;
+          // onDataCellSelectMove={(metaList) => {
+          //   // console.log(metaList, 'metaList/onDataCellSelectMove');
+          //   if (metaList.length == 0) return;
 
-            const cell = metaList[0] as any;
+          //   const cell = metaList[0] as any;
 
-            unstable_batchedUpdates(() => {
-              setCheckedRowIndex(cell['rowIndex']);
-              setCheckedColIndex(cell['colIndex']);
-            });
-          }}
+          //   unstable_batchedUpdates(() => {
+          //     setCheckedRowIndex(cell['rowIndex']);
+          //     setCheckedColIndex(cell['colIndex']);
+          //   });
+          // }}
         />
       )}
       <div style={{ display: 'flex' }}>

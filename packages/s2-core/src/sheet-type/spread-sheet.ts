@@ -132,6 +132,7 @@ export abstract class SpreadSheet extends EE {
     dataCfg: S2DataConfig,
     options: S2Options | null,
   ) {
+    console.log("table/constructor/")
     super();
     this.dataCfg = setupDataConfig(dataCfg);
     this.options = setupOptions(options);
@@ -589,6 +590,7 @@ export abstract class SpreadSheet extends EE {
     event: `${K}`,
     listener: EmitterType[K],
   ): this {
+    console.log(event, "params/on/SpreedSheet")
     return super.on(event, listener);
   }
 

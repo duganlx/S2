@@ -469,6 +469,7 @@ export class EventController {
   }
 
   private onCanvasMouseup = (event: CanvasEvent) => {
+    console.log(event, "params/onCanvasMouseup/EventController")
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
 
@@ -535,6 +536,7 @@ export class EventController {
   };
 
   private onCanvasClick = (event: CanvasEvent) => {
+    console.log(event, "params/onCanvasClick/EventController")
     this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
     if (isMobile()) {
       this.onCanvasMouseup(event);

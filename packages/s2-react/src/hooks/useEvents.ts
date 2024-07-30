@@ -15,7 +15,10 @@ export const useCellEvent = (
   handler: ((data: TargetCellInfo) => void) | undefined,
   s2: SpreadSheet,
 ) => {
+  console.log(eventName, "useCellEvent")
+
   React.useLayoutEffect(() => {
+    console.log(eventName, s2, "deps/useLayoutEffect/useCallEvent")
     const handlerFn = (event: GEvent) => {
       handler?.(getBaseCellData(event));
     };
@@ -52,6 +55,7 @@ export const useS2Event = (
 };
 
 export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
+  console.log(props, s2, "useEvents")
   // ============== Row Cell ====================
   useCellEvent(S2Event.ROW_CELL_HOVER, props.onRowCellHover, s2);
   useCellEvent(S2Event.ROW_CELL_CLICK, props.onRowCellClick, s2);
