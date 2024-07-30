@@ -5,7 +5,6 @@ import {
   SheetComponent,
   type SheetComponentOptions,
 } from '../../src/components';
-import { renderToMountedElement, stdlib } from '@antv/g2';
 
 // genData 生成S2明细表测试数据
 function genData() {
@@ -70,12 +69,12 @@ function genData() {
 function getCustomDataCell(cell: any) {
   if (!cell) return;
 
-  let node: any = cell['target']
+  let node: any = cell['target'];
   while (node && !(node instanceof CustomDataCell)) {
-    node = node['parentNode']
+    node = node['parentNode'];
   }
 
-  return node
+  return node;
 }
 
 class CustomDataCell extends DataCell {
@@ -93,7 +92,11 @@ class CustomDataCell extends DataCell {
   }
 }
 
+// DebugSheet 渲染
+// first: s2DataConfig: undefined, s2Options: undefined
 const DebugSheet: React.FC = () => {
+  console.log('Logic code begin. [DebugSheet]');
+
   // const [init, setInit] = useState<number>(0);
   const [s2DataConfig, setS2DataConfig] = useState<S2DataConfig>();
   const [s2Options, setS2Options] = useState<SheetComponentOptions>();
@@ -128,7 +131,7 @@ const DebugSheet: React.FC = () => {
         //     return ""
         //   },
         // }
-      }
+      },
       // frozen: {
       //   rowCount: 1,
       // },
@@ -145,10 +148,11 @@ const DebugSheet: React.FC = () => {
       // },
     };
 
-    setS2Options(s2opt);
-    setS2DataConfig(s2dc);
+    unstable_batchedUpdates(() => {
+      setS2Options(s2opt);
+      setS2DataConfig(s2dc);
+    });
   }, []);
-  console.log('DebugSheet');
 
   // useEffect(() => {
   //   if (checkedRowIndex === 0) return;
@@ -174,6 +178,8 @@ const DebugSheet: React.FC = () => {
   //   setS2Options(latestS2Options);
   // }, [checkedRowIndex]);
 
+  console.log(s2DataConfig, s2Options, '[DebugSheet]');
+  console.log('Logic code end. [DebugSheet]');
   return (
     <>
       {s2DataConfig && s2Options && (
@@ -201,7 +207,7 @@ const DebugSheet: React.FC = () => {
           //   },
           // }}
           onDataCellClick={() => {
-            console.log("-1")
+            console.log('onDataCellClick() [DebugSheet]');
           }}
           // onDataCellClick={(cell) => {
           //   // cell 中的 viewMeta: 当点击的单元格为G2图时为 undefined

@@ -27,7 +27,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindDataCellClick() {
+    console.log('bindDataCellClick() [DataCellClick]');
+
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
+      console.log('callback/on(data-cell:click) [DataCellClick]');
       event.stopPropagation();
 
       const { interaction } = this.spreadsheet;

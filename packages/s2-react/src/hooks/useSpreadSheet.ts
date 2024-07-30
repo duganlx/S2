@@ -11,6 +11,7 @@ import { usePagination } from './usePagination';
 import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentProps) {
+  console.log('Logic code begin. [useSpreadSheet]');
   const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -43,8 +44,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
   const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
   const pagination = usePagination(s2Ref.current!, props);
 
-  
-  console.log("useEvents/useSpreadSheet")
+  // useEvents 注册直接写在 组件 onXxx 的事件监听
   useEvents(props, s2Ref.current!);
 
   const renderSpreadSheet = React.useCallback(
@@ -72,6 +72,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
     s2.setThemeCfg(props.themeCfg);
     await s2.render();
     setLoading(false);
+    // 设置 s2Ref, 页面
     s2Ref.current = s2;
 
     /**
@@ -89,6 +90,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
       return;
     }
 
+    console.log('[]/useEffect [useSpreadSheet]');
     buildSpreadSheet();
     shouldInit.current = false;
 
@@ -165,6 +167,7 @@ export function useSpreadSheet(props: SheetComponentProps) {
     adaptive: props.adaptive,
   });
 
+  console.log('Logic code end. [useSpreadSheet]');
   return {
     s2Ref,
     containerRef,

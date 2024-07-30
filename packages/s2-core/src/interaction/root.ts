@@ -84,6 +84,7 @@ export class RootInteraction {
   };
 
   public constructor(spreadsheet: SpreadSheet) {
+    console.log('constructor() [RootInteraction]');
     this.spreadsheet = spreadsheet;
     this.registerEventController();
     this.registerInteractions();
@@ -466,10 +467,12 @@ export class RootInteraction {
   }
 
   private registerInteractions() {
+    console.log('registerInteractions() [RootInteraction]');
     const { customInteractions } = this.spreadsheet.options.interaction!;
 
     this.interactions.clear();
 
+    // 注册默认的交互事件
     const defaultInteractions = this.getDefaultInteractions();
 
     defaultInteractions.forEach(({ key, interaction: Interaction, enable }) => {
@@ -478,6 +481,7 @@ export class RootInteraction {
       }
     });
 
+    // 如果重写了事件，则会进行覆盖
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;

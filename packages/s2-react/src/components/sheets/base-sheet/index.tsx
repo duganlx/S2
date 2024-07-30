@@ -11,6 +11,7 @@ import type { SheetComponentProps } from '../../sheets/interface';
 import './index.less';
 
 export const BaseSheet: React.FC<SheetComponentProps> = React.memo((props) => {
+  console.log('Logic code begin. [BaseSheet]');
   const { dataCfg, options = {}, header } = props;
   const { s2Ref, loading, containerRef, pagination, wrapperRef } =
     useSpreadSheet(props);
@@ -19,6 +20,7 @@ export const BaseSheet: React.FC<SheetComponentProps> = React.memo((props) => {
     injectThemeVars(props.themeCfg?.name);
   }, [props.themeCfg?.name]);
 
+  console.log('Logic code end. [BaseSheet]');
   return (
     <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
       <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>

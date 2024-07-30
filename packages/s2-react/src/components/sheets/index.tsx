@@ -12,6 +12,7 @@ import { TableSheet } from './table-sheet';
 
 const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
   (props, ref) => {
+    console.log('Logic code begin. [Sheet]');
     const { sheetType, themeCfg } = props;
 
     const [s2Instance, setS2Instance] = React.useState<SpreadSheet | null>(
@@ -48,6 +49,7 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentProps>(
       }
     }, [sheetType, sheetProps]);
 
+    console.log('Logic code end. [Sheet]');
     return (
       <SpreadSheetContext.Provider value={s2Instance!}>
         <ConfigProvider themeName={themeCfg?.name}>

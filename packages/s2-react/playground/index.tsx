@@ -257,8 +257,7 @@ function MainLayout() {
   }, [sheetType]);
 
   React.useEffect(() => {
-    console.log('env:', process.env);
-
+    // console.log('env:', process.env);
     if (sheetType !== 'table') {
       return;
     }

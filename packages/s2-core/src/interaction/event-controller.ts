@@ -469,14 +469,16 @@ export class EventController {
   }
 
   private onCanvasMouseup = (event: CanvasEvent) => {
-    console.log(event, "params/onCanvasMouseup/EventController")
+    console.log(event, 'params/onCanvasMouseup/EventController');
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
 
       return;
     }
 
+    console.log(event.target, 'event.target/onCanvasMouseup/EventController');
     const cell = this.spreadsheet.getCell(event.target);
+    console.log(cell, 'cell/onCanvasMouseup/EventController');
 
     if (cell) {
       const cellType = cell.cellType;
@@ -536,7 +538,7 @@ export class EventController {
   };
 
   private onCanvasClick = (event: CanvasEvent) => {
-    console.log(event, "params/onCanvasClick/EventController")
+    console.log(event, 'params/onCanvasClick/EventController');
     this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
     if (isMobile()) {
       this.onCanvasMouseup(event);

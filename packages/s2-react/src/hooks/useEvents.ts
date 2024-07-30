@@ -15,14 +15,16 @@ export const useCellEvent = (
   handler: ((data: TargetCellInfo) => void) | undefined,
   s2: SpreadSheet,
 ) => {
-  console.log(eventName, "useCellEvent")
+  // console.log(eventName, 'useCellEvent');
 
+  // useLayoutEffect 在组件挂载之后才执行
   React.useLayoutEffect(() => {
-    console.log(eventName, s2, "deps/useLayoutEffect/useCallEvent")
+    // console.log('useLayoutEffect() [useCellEvent]');
     const handlerFn = (event: GEvent) => {
       handler?.(getBaseCellData(event));
     };
 
+    // 监听事件注册
     s2?.on(eventName, handlerFn);
 
     return () => {
@@ -37,6 +39,8 @@ export const useS2Event = (
   s2: SpreadSheet,
   emitBeforeOff = false,
 ) => {
+  // console.log(eventName, s2, 'useS2Event');
+
   React.useLayoutEffect(() => {
     const handlerFn: EmitterType[S2Event] = (...args: any[]) => {
       handler?.(...args);
@@ -54,8 +58,10 @@ export const useS2Event = (
   }, [s2, handler, eventName]);
 };
 
+// useEvents 注册事件监听
 export function useEvents(props: SheetComponentProps, s2: SpreadSheet) {
-  console.log(props, s2, "useEvents")
+  console.log('useEvents()');
+
   // ============== Row Cell ====================
   useCellEvent(S2Event.ROW_CELL_HOVER, props.onRowCellHover, s2);
   useCellEvent(S2Event.ROW_CELL_CLICK, props.onRowCellClick, s2);

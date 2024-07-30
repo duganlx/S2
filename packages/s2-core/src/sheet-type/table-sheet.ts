@@ -59,7 +59,9 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  protected bindEvents() {}
+  protected bindEvents() {
+    console.log('bindEvents() [TableSheet]');
+  }
 
   protected buildFacet() {
     const defaultCell = (viewMeta: ViewMeta) => {
