@@ -86,6 +86,7 @@ export function reactRender(
   node: React.ReactElement | null,
   container: ContainerType,
 ) {
+  console.log('reactRender()');
   if (!isLegacyReactVersion()) {
     modernRender(node, container);
 

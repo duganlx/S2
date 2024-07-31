@@ -32,6 +32,7 @@ export class CustomTooltip extends BaseTooltip<
   }
 
   renderContent() {
+    console.log('renderContent() [CustomTooltip]');
     // 配置级 s2.options.tooltip.content = ''
     const { content: contentFromOptions } = this.spreadsheet.options.tooltip!;
     // 方法级 s2.showTooltip({ content: '' })

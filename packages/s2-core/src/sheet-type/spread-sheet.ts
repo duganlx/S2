@@ -266,6 +266,7 @@ export abstract class SpreadSheet extends EE {
     T = TooltipContentType,
     Menu = BaseTooltipOperatorMenuOptions,
   >(showOptions: TooltipShowOptions<T, Menu>): Promise<void> {
+    console.log('showTooltip() [SpreadSheet]');
     const { content, event } = showOptions;
     const cell = this.getTargetCell(event?.target);
     const displayContent = isFunction(content)
@@ -288,6 +289,7 @@ export abstract class SpreadSheet extends EE {
     cellInfos: TooltipData[],
     options?: TooltipOptions,
   ): Promise<void> | void {
+    console.log('showTooltipWithInfo() [SpreadSheet]');
     const { enable: showTooltip, content } = getTooltipOptions(this, event)!;
 
     if (!showTooltip) {

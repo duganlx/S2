@@ -155,6 +155,7 @@ export const setTooltipContainerStyle = (
     className?: string[];
   },
 ) => {
+  console.log('setTooltipContainerStyle()');
   if (!container) {
     return;
   }

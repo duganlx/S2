@@ -98,6 +98,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
+    console.log('showTooltip() [DataCellClick]');
     const {
       data,
       isTotals = false,

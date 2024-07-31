@@ -1,3 +1,4 @@
+import { renderToMountedElement, stdlib } from '@antv/g2';
 import { DataCell, drawCustomContent, type S2DataConfig } from '@antv/s2';
 import React, { useEffect, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
@@ -8,47 +9,47 @@ import {
 
 // genData 生成S2明细表测试数据
 function genData() {
-  // const chartRow = {
-  //   province: {
-  //     values: {
-  //       type: 'interval',
-  //       autoFit: true,
-  //       data: [
-  //         { x: 'a', val: 2 },
-  //         { x: 'b', val: 3 },
-  //         { x: 'c', val: 3 },
-  //         { x: 'd', val: -3 },
-  //       ],
-  //       encode: { x: 'x', y: 'val' },
-  //       axis: {
-  //         y: {
-  //           title: false,
-  //           tick: false,
-  //           line: false,
-  //           label: false,
-  //           grid: false,
-  //         },
-  //         x: { title: false, tick: false, line: false, label: false },
-  //       },
-  //       animate: {
-  //         enter: { type: null },
-  //         update: { type: null },
-  //         exit: { type: null },
-  //       },
-  //       tooltip: null,
-  //       margin: 0,
-  //       padding: 0,
-  //     },
-  //   },
-  //   city: {
-  //     values: [
-  //       ['a', 10],
-  //       ['b', -10],
-  //       ['c', 0],
-  //       ['d', 101],
-  //     ],
-  //   },
-  // };
+  const chartRow = {
+    province: {
+      values: {
+        type: 'interval',
+        autoFit: true,
+        data: [
+          { x: 'a', val: 2 },
+          { x: 'b', val: 3 },
+          { x: 'c', val: 3 },
+          { x: 'd', val: -3 },
+        ],
+        encode: { x: 'x', y: 'val' },
+        axis: {
+          y: {
+            title: false,
+            tick: false,
+            line: false,
+            label: false,
+            grid: false,
+          },
+          x: { title: false, tick: false, line: false, label: false },
+        },
+        animate: {
+          enter: { type: null },
+          update: { type: null },
+          exit: { type: null },
+        },
+        tooltip: null,
+        margin: 0,
+        padding: 0,
+      },
+    },
+    city: {
+      values: [
+        ['a', 10],
+        ['b', -10],
+        ['c', 0],
+        ['d', 101],
+      ],
+    },
+  };
 
   const normalRow: any[] = [];
 
@@ -61,8 +62,8 @@ function genData() {
     });
   }
 
-  // return [chartRow, ...normalRow];
-  return normalRow;
+  return [chartRow, ...normalRow];
+  // return normalRow;
 }
 
 // 获取自定义单元格对象
@@ -135,17 +136,17 @@ const DebugSheet: React.FC = () => {
       // frozen: {
       //   rowCount: 1,
       // },
-      // style: {
-      //   rowCell: {
-      //     heightByField: {
-      //       '0': 100,
-      //     },
-      //     height: 24,
-      //   },
-      // },
-      // dataCell: (viewMeta: any, spreadsheet: any) => {
-      //   return new CustomDataCell(viewMeta, spreadsheet);
-      // },
+      style: {
+        rowCell: {
+          heightByField: {
+            '0': 100,
+          },
+          height: 24,
+        },
+      },
+      dataCell: (viewMeta: any, spreadsheet: any) => {
+        return new CustomDataCell(viewMeta, spreadsheet);
+      },
     };
 
     unstable_batchedUpdates(() => {
@@ -206,9 +207,6 @@ const DebugSheet: React.FC = () => {
           //     },
           //   },
           // }}
-          onDataCellClick={() => {
-            console.log('onDataCellClick() [DebugSheet]');
-          }}
           // onDataCellClick={(cell) => {
           //   // cell 中的 viewMeta: 当点击的单元格为G2图时为 undefined
           //   console.log(cell, 'cell/onDataCellClick/DebugSheet');
@@ -227,31 +225,34 @@ const DebugSheet: React.FC = () => {
           //     setCheckedColIndex(colIndex);
           //   });
           // }}
-          // onDataCellRender={(cell) => {
-          //   if (!cell.isChartData()) {
-          //     return;
-          //   }
+          onDataCellClick={() => {
+            console.log('-1');
+          }}
+          onDataCellRender={(cell) => {
+            if (!cell.isChartData()) {
+              return;
+            }
 
-          //   // 获取 G2 渲染到 S2 单元格内所需配置
-          //   const chartOptions = cell.getRenderChartOptions();
+            // 获取 G2 渲染到 S2 单元格内所需配置
+            const chartOptions = cell.getRenderChartOptions();
 
-          //   try {
-          //     renderToMountedElement(chartOptions, {
-          //       // 指定渲染容器为当前单元格
-          //       group: cell,
-          //       // 根据渲染的图表, 自行选择 G2 library: https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
-          //       library: stdlib(),
-          //     });
-          //   } catch (e) {
-          //     console.log(e)
-          //     // console.log(
-          //     //   cell,
-          //     //   chartOptions,
-          //     //   e,
-          //     //   'exception renderToMountedElement Step2ResultView',
-          //     // );
-          //   }
-          // }}
+            try {
+              renderToMountedElement(chartOptions, {
+                // 指定渲染容器为当前单元格
+                group: cell,
+                // 根据渲染的图表, 自行选择 G2 library: https://g2.antv.antgroup.com/manual/extra-topics/bundle#g2stdlib
+                library: stdlib(),
+              });
+            } catch (e) {
+              console.log(e);
+              // console.log(
+              //   cell,
+              //   chartOptions,
+              //   e,
+              //   'exception renderToMountedElement Step2ResultView',
+              // );
+            }
+          }}
           // onDataCellSelectMove={(metaList) => {
           //   // console.log(metaList, 'metaList/onDataCellSelectMove');
           //   if (metaList.length == 0) return;

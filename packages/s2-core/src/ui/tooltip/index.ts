@@ -44,6 +44,7 @@ export class BaseTooltip<
   }
 
   public show<T = Content, M = Menu>(options: TooltipShowOptions<T, M>) {
+    console.log('show() [BaseTooltip]');
     const { position, content, event } = options;
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
@@ -105,6 +106,7 @@ export class BaseTooltip<
   }
 
   public renderContent<T = TooltipContentType>(content: T) {
+    console.log('renderContent() [BaseTooltip]');
     if (!this.container) {
       return;
     }
